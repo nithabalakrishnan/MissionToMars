@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Mission to Mars</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  
+   <!-- Main content container -->
+   <div class ="container-fluid text-justify  well well-lg ">
+      <div class="row ">
+          <div class="col-sm-8 " >
+                  <div class="well well-sm text-default text-center">
+                      <h1 class ="text-center ">Mission to Mars</h1><br>
+                      <p><a class="btn btn-primary btn-lg " href="/scrape" role="button">Scrape Data!</a></p>
+                  </div>
+          </div > 
+      </div>
+     
+      <div class="col-sm-8" >
+        <div class="well well-sm">  
+          <div class="row">
+            <div class="col-sm-6">
+                <h2>Latest Mars News </h2>
+                <p class="font-weight-bold">{{mars_info.title}}</p>
+                <p>{{mars_info.description}}</p>
+            </div>
+            
+          </div>
+        </div>
+        </div>
+     
+        <div class="col-sm-8" >
+            <div class="well well-sm">  
+              <div class="row">
+                <div class="col-sm-6">
+                    <h4>Featured Mars Image  </h4>
+                    <figure class="figure">
+                        <img src={{mars_info.image_link}} class="figure-img img-fluid rounded" alt="figure." style="width:300px;height:200px;">
+                        
+                    </figure>
+
+                </div>
+                <div class="col-sm-6">
+                    <h4>Current Weather on Mars </h4>
+                    <p>{{ mars_info.mars_weather}}</p>
+                </div>
+                <div class="col-sm-6">
+                    <h4>Mars Facts </h4>
+                    {{ mars_info.mars_facts |safe }}
+                </div>
+              </div>
+            </div>
+            
+      </div>
+
+      <div class="well well-sm">
+          <div class="row">
+          {% for item in mars_info.hemi_links %}
+            <div class="col-sm-6">
+                <h4 > {{item.title}}</h4>
+                <img src= {{item.img_url}} class="img-responsive " style="display:inline" alt="1" width="350" height="350">
+            </div>
+        {% endfor %}
+          </div>
+      </div>
+
+
+
+      
+      
+   
+    
+    
+ 
+  
+</body>
+
+</html>
