@@ -9,15 +9,15 @@ def init_browser():
     executable_path = {"executable_path": "/usr/local/bin/chromedriver"}
     return Browser("chrome", **executable_path, headless=False)
     
-def load_browser(url):
+def load_browser(url,browser):
     
-    browser = init_browser()
+    
     browser.visit(url)
     time.sleep(3)
     html = browser.html
     soup = BeautifulSoup(html, 'html.parser')
     # Close the browser after scraping
-    browser.quit()
+    #browser.quit()
     return soup
 def get_image_info(soup):
     # Get image URL
@@ -37,14 +37,14 @@ def get_image_info(soup):
 
 
 def scrape_info():
-
+    browser = init_browser()
     url = "https://mars.nasa.gov/news/?page=0&per_page=40&order=publish_date+desc%2Ccreated_at+desc&search=&category=19%2C165%2C184%2C204&blank_scope=Latest"
-    soup = load_browser(url)
+    soup = load_browser(url,browser)
     title_div = soup.find('div', class_='content_title').text
     p_div = soup.find('div' , class_ = 'article_teaser_body').text
     print(f'{title_div}\n{p_div}')
     base_url = "https://www.jpl.nasa.gov"
-    soup = load_browser(base_url + "/spaceimages/?search=&category=Mars")
+    soup = load_browser(base_url + "/spaceimages/?search=&category=Mars",browser)
     featured_image = soup.find(class_ = 'carousel_item')
     featured_image_a = featured_image.find('a')
     featured_image_link =featured_image_a.get('data-fancybox-href') 
@@ -53,7 +53,7 @@ def scrape_info():
     
     # Mars Weather latest tweet
     twitter_base_url = 'https://twitter.com/marswxreport?lang=en'
-    soup = load_browser(twitter_base_url)
+    soup = load_browser(twitter_base_url,browser)
     mars_weather_tweets = soup.find_all('p',class_ = 'TweetTextSize TweetTextSize--normal js-tweet-text tweet-text')
     for tweet in mars_weather_tweets:
         weather_tweet = tweet.text
@@ -75,7 +75,7 @@ def scrape_info():
     #
     base_url = 'https://astrogeology.usgs.gov'
     mars_hemi_url = base_url + '/search/results?q=hemisphere+enhanced&k1=target&v1=Mars'
-    soup = load_browser(mars_hemi_url)
+    soup = load_browser(mars_hemi_url,browser)
     links = []
     parents = soup.select("#results-accordian")    
     for parent in parents :
@@ -85,7 +85,7 @@ def scrape_info():
             links.append(base_url + a.get("href"))
     mars_hemi_info = []
     for link in links:
-        soup = load_browser(link)
+        soup = load_browser(link,browser)
         mars_hemi_info.append(get_image_info(soup))
         
     print(mars_hemi_info)
